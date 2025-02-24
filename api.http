@@ -1,0 +1,42 @@
+###
+# @name createAsset
+POST http://localhost:3001/assets
+Content-Type: application/json
+
+{
+  "name": "Amazon",
+  "symbol": "AMZN",
+  "price": 100,
+  "image": "AMZN.png"
+}
+###
+@assetId = {{ createAsset.response.body._id }}
+###
+GET http://localhost:3001/assets
+###
+GET http://localhost:3001/assets/A1
+###
+PATCH http://localhost:3001/assets/{{ assetId }}
+Content-Type: application/json
+
+{
+  "name": "Amazon",
+  "symbol": "NASDAQ: AMZN",
+  "price": 100,
+  "image": "AMZN.png"
+}
+###
+DELETE http://localhost:3001/assets/{{ assetId }}
+
+
+###
+# @name createWallet
+POST http://localhost:3001/wallets
+###
+@walletId = {{ createWallet.response.body._id }}
+###
+GET http://localhost:3001/wallets
+###
+GET http://localhost:3001/wallets/{{ walletId }}
+###
+DELETE http://localhost:3001/wallets/{{ walletId }}
