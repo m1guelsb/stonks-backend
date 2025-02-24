@@ -40,3 +40,14 @@ GET http://localhost:3001/wallets
 GET http://localhost:3001/wallets/{{ walletId }}
 ###
 DELETE http://localhost:3001/wallets/{{ walletId }}
+
+
+###
+# @name createWalletAsset
+POST http://localhost:3001/wallets/{{ walletId }}/assets
+Content-Type: application/json
+
+{
+  "shares": 69,
+  "assetId": "{{ assetId }}"
+}

@@ -10,6 +10,7 @@ import {
 import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
+import { CreateWalletAssetDto } from './dto/create-wallet-asset.dto';
 
 @Controller('wallets')
 export class WalletsController {
@@ -38,5 +39,13 @@ export class WalletsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.walletsService.remove(id);
+  }
+
+  @Post(':walletId/assets')
+  createWalletAsset(
+    @Param('walletId') walletId: string,
+    @Body() { assetId, shares }: CreateWalletAssetDto,
+  ) {
+    return this.walletsService.createWalletAsset(walletId, { assetId, shares });
   }
 }
