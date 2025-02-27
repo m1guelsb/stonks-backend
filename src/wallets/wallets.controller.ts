@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { CreateWalletAssetDto } from './dto/create-wallet-asset.dto';
+import { WalletPresenter } from './wallet.presenter';
 
 @Controller('wallets')
 export class WalletsController {
@@ -27,8 +29,14 @@ export class WalletsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.walletsService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const wallet = await this.walletsService.findOne(id);
+
+    if (!wallet) {
+      throw new NotFoundException('Wallet not found');
+    }
+
+    return new WalletPresenter(wallet);
   }
 
   @Patch(':id')
