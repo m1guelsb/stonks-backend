@@ -18,7 +18,10 @@ export class AssetsService {
   }
 
   findOne(symbol: string) {
-    return this.assetSchema.findOne({ symbol });
+    return this.assetSchema.findOne({ symbol }).collation({
+      locale: 'en',
+      strength: 1,
+    });
   }
 
   update(id: string, updateAssetDto: UpdateAssetDto) {
