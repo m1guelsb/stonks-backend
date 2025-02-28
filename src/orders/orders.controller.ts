@@ -11,6 +11,7 @@ import {
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { OrderPresenter } from './order.presenter';
 
 @Controller('orders')
 export class OrdersController {
@@ -22,8 +23,9 @@ export class OrdersController {
   }
 
   @Get()
-  findAll(@Query('walletId') walletId: string) {
-    return this.ordersService.findAll({ walletId });
+  async findAll(@Query('walletId') walletId: string) {
+    const orders = await this.ordersService.findAll({ walletId });
+    return orders.map((order) => new OrderPresenter(order));
   }
 
   @Get(':id')

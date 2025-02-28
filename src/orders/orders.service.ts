@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Order, OrderStatus } from './entities/order.entity';
+import { Asset } from 'src/assets/entities/asset.entity';
 
 @Injectable()
 export class OrdersService {
@@ -21,8 +22,10 @@ export class OrdersService {
     });
   }
 
-  findAll(filter: { walletId: string }) {
-    return this.orderSchema.find({ wallet: filter.walletId });
+  async findAll(filter: { walletId: string }) {
+    return this.orderSchema
+      .find({ wallet: filter.walletId })
+      .populate('asset') as Promise<(Order & { asset: Asset })[]>;
   }
 
   findOne(id: string) {
