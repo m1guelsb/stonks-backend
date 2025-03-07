@@ -33,7 +33,10 @@ export class AssetsService {
     return this.assetSchema.findByIdAndDelete(id);
   }
 
-  subscribePriceChangeEvents() {
+  subscribePriceChangeEvents(): Observable<{
+    event: 'asset-price-change';
+    data: Asset;
+  }> {
     return new Observable((observer) => {
       this.assetSchema
         .watch(
