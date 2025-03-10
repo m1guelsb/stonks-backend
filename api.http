@@ -12,6 +12,8 @@ Content-Type: application/json
 ###
 @assetId = {{ createAsset.response.body._id }}
 ###
+@assetSymbol = {{ createAsset.response.body.symbol }}
+###
 GET http://localhost:3001/assets
 ###
 GET http://localhost:3001/assets/AMZN
@@ -28,6 +30,18 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3001/assets/{{ assetId }}
 
+###
+# @name createAssetDaily
+POST http://localhost:3001/assets/{{ assetSymbol }}/dailies
+Content-Type: application/json
+
+{
+  "date": "2025-03-09",
+  "price": 1100
+}
+
+###
+GET http://localhost:3001/assets/{{ assetSymbol }}/dailies
 
 ###
 # @name createWallet

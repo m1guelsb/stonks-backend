@@ -23,4 +23,4 @@ export class AssetDaily {
   price: number;
 }
 
-export const AssetDailySchema = SchemaFactory.createForClass(Asset);
+export const AssetDailySchema = SchemaFactory.createForClass(AssetDaily);
