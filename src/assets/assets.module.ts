@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Asset, AssetSchema } from './entities/asset.entity';
 import { AssetsGateway } from './assets.gateway';
 import { AssetDaily, AssetDailySchema } from './entities/asset-daily.entity';
+import { AssetDailiesService } from './asset-dailies.service';
+import { AssetsDailiesController } from './asset-dailies.controller';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import { AssetDaily, AssetDailySchema } from './entities/asset-daily.entity';
       },
     ]),
   ],
-  controllers: [AssetsController],
-  providers: [AssetsService, AssetsGateway],
+  controllers: [AssetsController, AssetsDailiesController],
+  providers: [AssetsService, AssetDailiesService, AssetsGateway],
 })
 export class AssetsModule {}

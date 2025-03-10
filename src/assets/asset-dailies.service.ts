@@ -25,5 +25,33 @@ export class AssetDailiesService {
     });
   }
 
-  subscribeCreatedEvents(): Observable<AssetDaily & { asset: Asset }> {}
+  subscribeCreatedEvents(): Observable<{
+    event: 'asset-daily-creation';
+    assetDaily: AssetDaily & { asset: Asset };
+  }> {
+    return new Observable((observer) => {
+      this.assetDailySchema
+        .watch(
+          [
+            {
+              $match: {
+                operationType: 'insert',
+              },
+            },
+          ],
+          { fullDocument: 'updateLookup' },
+        )
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        .on('change', async (data) => {
+          const assetDaily = await this.assetDailySchema
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            .findById(data.fullDocument._id)
+            .populate('asset');
+          observer.next({
+            event: 'asset-daily-creation',
+            assetDaily: assetDaily! as AssetDaily & { asset: Asset },
+          });
+        });
+    });
+  }
 }

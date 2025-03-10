@@ -35,7 +35,7 @@ export class AssetsService {
 
   subscribePriceChangeEvents(): Observable<{
     event: 'asset-price-change';
-    data: Asset;
+    asset: Asset;
   }> {
     return new Observable((observer) => {
       this.assetSchema
@@ -66,7 +66,7 @@ export class AssetsService {
 
           observer.next({
             event: 'asset-price-change',
-            data: asset!,
+            asset: asset!,
           });
         });
     });
