@@ -3,6 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Wallet, WalletDocument } from 'src/wallets/entities/wallet.entity';
 import { Asset, AssetDocument } from 'src/assets/entities/asset.entity';
+import { Trade } from './trade.entity';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -43,6 +44,9 @@ export class Order {
 
   @Prop({ type: String, ref: Asset.name })
   asset: AssetDocument | string;
+
+  @Prop({ type: [mongoose.Schema.Types.String], ref: 'Trade' })
+  trades: Trade[] | string[];
 
   createdAt!: Date;
   updatedAt!: Date;
