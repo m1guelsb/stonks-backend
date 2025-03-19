@@ -6,7 +6,8 @@ export type AssetDocument = HydratedDocument<Asset>;
 
 @Schema({
   timestamps: true,
-  //to have the document previous version
+  optimisticConcurrency: true,
+  //to have the document previous version and document asset history
   collectionOptions: {
     changeStreamPreAndPostImages: {
       enabled: true,

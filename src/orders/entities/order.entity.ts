@@ -19,7 +19,7 @@ export enum OrderStatus {
   FAILED = 'FAILED',
 }
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, optimisticConcurrency: true })
 export class Order {
   @Prop({ default: () => crypto.randomUUID() })
   _id: string;
