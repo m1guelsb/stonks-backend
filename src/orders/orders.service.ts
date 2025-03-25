@@ -29,7 +29,7 @@ export class OrdersService implements OnModuleInit {
     @InjectModel(WalletAsset.name)
     private walletAssetSchema: Model<WalletAsset>,
     @InjectModel(Wallet.name) private walletSchema: Model<Wallet>,
-    @InjectModel(Trade.name) private tradeSchema: Model<Wallet>,
+    @InjectModel(Trade.name) private tradeSchema: Model<Trade>,
     private kafkaInst: kafkaLib.KafkaJS.Kafka,
   ) {}
 
@@ -80,6 +80,7 @@ export class OrdersService implements OnModuleInit {
       if (!order) {
         throw new Error('Order not found');
       }
+      console.log({ order });
       const tradeDocs = await this.tradeSchema.create(
         [
           {
@@ -93,6 +94,7 @@ export class OrdersService implements OnModuleInit {
         { session },
       );
       const trade = tradeDocs[0];
+      console.log({ trade });
 
       order.partial -= dto.shares;
       order.status = dto.status;
@@ -103,16 +105,19 @@ export class OrdersService implements OnModuleInit {
         const asset = (await this.assetSchema
           .findById(order.asset)
           .session(session)) as AssetDocument;
+
         if (asset.updatedAt < dto.date) {
           asset.price = dto.price;
           await asset.save({ session });
         }
+
         const assetDaily = await this.assetDailySchema
           .findOne({
             asset: order.asset,
             date: dto.date,
           })
           .session(session);
+
         if (!assetDaily) {
           await this.assetDailySchema.create(
             [
